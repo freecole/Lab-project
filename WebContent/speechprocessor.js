@@ -3,7 +3,7 @@
 var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededCommandsAndNumbersString="";
-var numericalReferenced=false;//Remember to change the library version accordingly!
+var numericalReferenced=true;//Remember to change the library version accordingly!
 
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 if (numericalReferenced===true)
@@ -18,7 +18,7 @@ else
 
     function onLoaded() 
     {	
-    	 
+    	speechapi.speak("Loaded","male"); 
     	//Now, on load for numerical referencing requires a vocab to be loaded
     	if (numericalReferenced===true)
     		{  
@@ -31,11 +31,13 @@ else
 	}
     
     function onResult(result) 
-    {
+    { 
     	if (numericalReferenced===true)
     		{
     			document.getElementById('answer').innerHTML = result.text;
     			processResult(result);
+    			
+    			
     		}
     	
     }
@@ -51,7 +53,7 @@ else
         var params = {allowscriptaccess : "always"};
         var attributes = {};
         attributes.id = "flashContent";
-        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.5.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
+        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.6.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
         speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
         
         setTimeout("initialisePage()",1000);
@@ -132,8 +134,9 @@ else
 	function processResult(result)
 	{
 		if (!tryProcessResultAsCommand(result))
-		{
-	      tryProcessResultAsLink(result);
+		{	//setTimeout("alert('hello')",1250);
+			//setTimeout("tryProcessResultAsLink('result')",1000);
+			tryProcessResultAsLink(result);
 		}
 		
 			
@@ -150,8 +153,9 @@ else
 			var links=AssignLinkNumbers();// put links into index referable
 											// form
 			var myLink=links[index];// retrieve the link to be followed
-			document.location.href = myLink;// follow it
+			speechapi.speak(result.text,"male");
 			document.getElementById('link').innerHTML=myLink;
+			setTimeout("navigate('mylink');",500);
 		}
 	}
 	
@@ -269,6 +273,26 @@ else
 	     
 		 }
 	} 
+	
+	function navigate(mylink)
+	{
+		document.location.href = "https://mail.google.com/mail/?shva=1#inbox";// follow it
+	}
+/*	
+	function determinSpeechAPIVerion()
+	{
+		if ( numericalReferenced==true)
+			{
+				return "http://www.speechapi.com/static/lib/speechapi-1.3.js"
+			
+			}
+		else
+			{
+			return "http://www.speechapi.com/static/lib/speechapi-1.5.js"
+			}
+		
+	}
+	*/
 /*
 	function overallVisibilityAdjustment()
 	{
