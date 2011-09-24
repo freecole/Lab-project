@@ -3,16 +3,85 @@
 var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededCommandsAndNumbersString="";
+var numericalReferenced=true;
 
+//Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
+if (numericalReferenced===true)
+	{
+		initialiseNumericalReference();
+	}
+else
+	{
+		initialiseNameReference();
+	}
+
+
+    function onLoaded() 
+    {	 setSwitchFocus(1);//Set focus to the switch used for activation
+    	
+    	//Now, on load for numerical referencing requires a vocab to be loaded
+    	if (numericalReferenced===true)
+    		{
+    			var neededSpeechSpace=determineArrays();
+    			speechapi.setupRecognition("SIMPLE", neededSpeechSpace ,false);
+    		}
+    
+    		hideFlash();
+        //Put something here that shows an image to indicate that the flash player is ready... 
+	}
+    
+    function onResult(result) 
+    {
+    	if (numericalReferenced===true)
+    		{
+    			document.getElementById('answer').innerHTML = result.text;
+    			processResult(result);
+    		}
+    	
+    }
+     
+	function onFinishTTS() { }
+	
+    
+    //This function performs the basic setup for the numerically referenced pages
+    function initialiseNumericalReference()
+    {
+    	   
+        var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
+        var params = {allowscriptaccess : "always"};
+        var attributes = {};
+        attributes.id = "flashContent";
+        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.5.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
+        speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
+  
+    }
+    //This function is in contrast to the initialiseNumericalReference function as it sets up the engine to rather reference links by name
+    function initialiseNameReference()
+    {
+        var linkables = ["a"];
+        var speakables = [];
+        var focusables =[];
+        var browserControl = false;
+        var formsEnabled = false;
+
+        function onTtsComplete() {}
+        function onResult(result) {}
+        function onLoaded() {}
+
+        var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
+        //var flashvars = {speechServer : "rtmp://www.speechapi.com:1935/firstapp"};
+        var params = {allowscriptaccess : "always"};
+        var attributes = {};
+        attributes.id = "flashContent";
+        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.7.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
+        speechapi.setupPage("sal","password",onResult,onTtsComplete, onLoaded, "flashContent",linkables,speakables,focusables,browserControl,formsEnabled);
+    	
+    }
+    
 	function determineArrays()
 	{ 
 		var allOptionsString="command down,command up,command back,command forward,command home,one,two,three,four,five,six,seven,eight,nine,ten";// list
-																																						// of
-																																						// all
-																																						// the
-																																						// possible
-																																						// input
-																																						// commands
+																																					
 		oneIndex=allOptionsString.indexOf("one");
 		if (oneIndex !=-1)
 			{
@@ -44,33 +113,6 @@ var neededCommandsAndNumbersString="";
 			}
 		
 	}
-    function onLoaded() 
-    {	 setSwitchFocus(1);//Set focus to the switch used for activation
-     
-    
-    	var neededSpeechSpace=determineArrays();
-        speechapi.setupRecognition("SIMPLE", neededSpeechSpace ,false);
-        hideFlash();
-        //Put something here that shows an image to indicate that the flash player is ready... 
-	}
-    //global stuff
-    
-       var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
-       var params = {allowscriptaccess : "always"};
-       var attributes = {};
-       attributes.id = "flashContent";
-       swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.5.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
-       speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
-  
-    function onResult(result) 
-    {
-    	document.getElementById('answer').innerHTML = result.text;
-    
-    	processResult(result);
-    }
-        
-    function onFinishTTS() { }
- 
    
 
 // General purpose functions
