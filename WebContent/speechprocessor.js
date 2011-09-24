@@ -3,7 +3,7 @@
 var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededCommandsAndNumbersString="";
-var numericalReferenced=true;
+var numericalReferenced=false;//Remember to change the library version accordingly!
 
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 if (numericalReferenced===true)
@@ -17,16 +17,16 @@ else
 
 
     function onLoaded() 
-    {	 setSwitchFocus(1);//Set focus to the switch used for activation
-    	
+    {	
+    	 
     	//Now, on load for numerical referencing requires a vocab to be loaded
     	if (numericalReferenced===true)
-    		{
+    		{  
     			var neededSpeechSpace=determineArrays();
     			speechapi.setupRecognition("SIMPLE", neededSpeechSpace ,false);
     		}
     
-    		hideFlash();
+    		
         //Put something here that shows an image to indicate that the flash player is ready... 
 	}
     
@@ -53,6 +53,8 @@ else
         attributes.id = "flashContent";
         swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.5.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
         speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
+        
+        setTimeout("initialisePage()",1000);
   
     }
     //This function is in contrast to the initialiseNumericalReference function as it sets up the engine to rather reference links by name
@@ -74,7 +76,18 @@ else
         var attributes = {};
         attributes.id = "flashContent";
         swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.7.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
-        speechapi.setupPage("sal","password",onResult,onTtsComplete, onLoaded, "flashContent",linkables,speakables,focusables,browserControl,formsEnabled);
+        speechapi.setupPage("freecole","0706009y",onResult,onTtsComplete, onLoaded, "flashContent",linkables,speakables,focusables,browserControl,formsEnabled);
+    	
+        setTimeout("initialisePage()",1000);
+       
+       
+    }
+    
+    //Focuses on the buttons and hides the flash
+    function initialisePage()
+    {
+    	 setSwitchFocus(1);
+         hideFlash();
     	
     }
     
