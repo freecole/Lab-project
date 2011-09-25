@@ -4,7 +4,7 @@ var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededCommandsAndNumbersString="";
 var numericalReferenced=true;//Remember to change the library version accordingly!
-
+var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 if (numericalReferenced===true)
 	{
@@ -134,8 +134,7 @@ else
 	function processResult(result)
 	{
 		if (!tryProcessResultAsCommand(result))
-		{	//setTimeout("alert('hello')",1250);
-			//setTimeout("tryProcessResultAsLink('result')",1000);
+		{	
 			tryProcessResultAsLink(result);
 		}
 		
@@ -155,7 +154,8 @@ else
 			var myLink=links[index];// retrieve the link to be followed
 			speechapi.speak(result.text,"male");
 			document.getElementById('link').innerHTML=myLink;
-			setTimeout("navigate('mylink');",500);
+			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
+	
 		}
 	}
 	
@@ -164,15 +164,20 @@ else
 	{
 		 var index=searchForCommandIndex(result);
 		switch(index){
-		case 0:	scrolldown();
+		case 0:	speechapi.speak("Down","male");
+				setTimeout("scrolldown()", delayForVoicefeedback);
 				break;
-		case 1:	scrollup();
+		case 1:	speechapi.speak("Up","male");
+				setTimeout(scrollup, delayForVoicefeedback);
 				break;
-		case 2:	goback();
+		case 2:	speechapi.speak("Back","male");
+				setTimeout(goback, delayForVoicefeedback);
 				break;
-		case 3:	goforward();
+		case 3:	speechapi.speak("Forward","male");
+				setTimeout(goforward, delayForVoicefeedback);
 				break;
-		case 4:	gohome();
+		case 4:	speechapi.speak("Home","male");
+				setTimeout("gohome()",delayForVoicefeedback);
 				break;
 		default:return false; 
 		}
@@ -276,7 +281,7 @@ else
 	
 	function navigate(mylink)
 	{
-		document.location.href = "https://mail.google.com/mail/?shva=1#inbox";// follow it
+		document.location.href =mylink;// follow it
 	}
 /*	
 	function determinSpeechAPIVerion()
