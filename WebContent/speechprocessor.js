@@ -6,7 +6,12 @@ var neededCommandsAndNumbersString="";
 var numericalReferenced=true;//Remember to change the library version accordingly!
 var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
-if (numericalReferenced===true)
+
+initialise(numericalReferenced);
+
+function initialise(bnumericalReferenced)
+{
+if (bnumericalReferenced===true)
 	{
 		initialiseNumericalReference();
 	}
@@ -14,7 +19,7 @@ else
 	{
 		initialiseNameReference();
 	}
-
+}
 
     function onLoaded() 
     {	
