@@ -8,6 +8,8 @@ myArray[5] = "How deep can dolphins swim?";
 myArray[6] = "How fast does a dogs heart beat?";
 myArray[7] = "What is a person who makes horse shoes called?";
 myArray[8] = "Is there a bird that is poisonous?";
+// How many giraffe species are there in total?
+// What is the life expectancy of a shark?
 
 function date_time()
 {
