@@ -33,6 +33,22 @@ function question(i)
 {
 	document.writeln(myArray[i]);
 }
+
+// displays text in popup without creating a new html page
+function Trypopup() 
+{
+	newwindow3=window.open('','name','height=200,width=300');
+	newwindow3.document.write("Hello");
+	newwindow3.document.write("Pop up will close in 4 seconds");
+	
+	setTimeout('newwindow3.close()', 4000);
+	if (window.focus) // first check if the browser supports the focus 
+	{
+		newwindow.focus(); // focus on new window so on top of other window			
+	}
+	return false; // prevent browser from ffl the actual link
+}
+
 /*
 //checks if the correct category is selected
 function checkAnswer(quizForm,theAnswer)
