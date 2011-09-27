@@ -3,6 +3,11 @@ var index=0;
 myArray[1] = "What is the average wing-span of bald eagles?";
 myArray[2] = "How much better is the sence of smell of dogs than humans?";
 myArray[3] = "What is the average lifespan of a horse?";
+myArray[4] = "How many rows of whiskers do cats have?";
+myArray[5] = "How deep can dolphins swim?";
+myArray[6] = "How fast does a dogs heart beat?";
+myArray[7] = "What is a person who makes horse shoes called?";
+myArray[8] = "Is there a bird that is poisonous?";
 
 function date_time()
 {
@@ -27,7 +32,7 @@ function question(i)
 {
 	document.writeln(myArray[i]);
 }
-
+/*
 //checks if the correct category is selected
 function checkAnswer(quizForm,theAnswer)
 {
@@ -36,6 +41,7 @@ function checkAnswer(quizForm,theAnswer)
 	var answer1 = 1;
 	var answer2 = 3;
 	var answer3 = 5;
+	var answer4 = 2;
 	
 	for(;i<quizForm.elements.length;i++)
 	{
@@ -51,7 +57,6 @@ function checkAnswer(quizForm,theAnswer)
 		alert("Correct answer: " + value);
 		if (value == answer1)
 		{
-			//alert("birds");
 			document.URL = "http://localhost:8080/First_Iteration/Birds.html";
 		}
 		else if (value == answer2)
@@ -61,6 +66,10 @@ function checkAnswer(quizForm,theAnswer)
 		else if (value == answer3)
 		{
 			document.URL = "http://localhost:8080/First_Iteration/Horses.html";
+		}
+		else if (value == answer4)
+		{
+			document.URL = "http://localhost:8080/First_Iteration/Cats.html";
 		}
 	}
 	else
@@ -78,6 +87,7 @@ function check(quizForm,theAnswer)
 	var answer1 = 4;
 	var answer2 = 1;
 	var answer3 = 3;
+	var answer4 = 2;
 	
 	
 	for(;i<quizForm.elements.length;i++)
@@ -91,26 +101,23 @@ function check(quizForm,theAnswer)
 
 	if (value == theAnswer)
 	{
-		alert("Correct answer: " + value);
+		//alert("Correct answer: " + value);
 		if (value == answer1)
 		{
-			//alert("ques 2");
 			document.URL = "http://localhost:8080/First_Iteration/questionTwo.html";
 		}
-		else
+		else if (value == answer2)
 		{
-			alert("Test completed");
-		}
-		/*else if (value == answer2)
-		{
-			document.URL = "http://localhost:8080/browser_testing/quesThree.html";
+			document.URL = "http://localhost:8080/First_Iteration/spokenLinkTesting.html";
 		}
 		else if (value == answer3)
 		{
-			alert("Test completed");
-			document.URL = "http://localhost:8080/browser_testing/finalPage.html";
-			//window.open();
-		}*/
+			document.URL = "http://localhost:8080/First_Iteration/questionThree.html";
+		}
+		else if (value == answer4)
+		{
+			document.URL = "http://localhost:8080/First_Iteration/questionFour.html";
+		}
 	}
 	else
 	{
@@ -119,3 +126,4 @@ function check(quizForm,theAnswer)
 	return false;
 }
 
+*/
