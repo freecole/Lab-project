@@ -35,11 +35,15 @@ function question(i)
 }
 
 // displays text in popup without creating a new html page
-function Trypopup() 
+function Trypopup(answer) 
 {
-	newwindow3=window.open('','name','height=200,width=300');
+	newwindow3=window.open('','name','height=200,width=300,resizable=yes, scrollbars=yes,toolbars=yes');
 	newwindow3.document.write("Hello");
+	newwindow3.document.write('<p></p>');
 	newwindow3.document.write("Pop up will close in 4 seconds");
+	newwindow3.document.write('<p></p>');
+	var getValue = answer;
+	newwindow3.document.write(getValue);
 	
 	setTimeout('newwindow3.close()', 4000);
 	if (window.focus) // first check if the browser supports the focus 
