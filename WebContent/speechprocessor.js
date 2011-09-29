@@ -5,6 +5,8 @@ var neededNumbersArray=[];
 var neededNameArray=[];
 var neededCommandsAndNumbersString="";
 var numericalReferenced=false;//Remember to change the library version accordingly!
+var voiceFeedback=false;
+
 var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 
@@ -22,11 +24,30 @@ initialise();
 			}
 		
 	}
+	
+	function activateVoiceFeedback(choice)
+	{
+		if (choice==true)
+		{
+			voiceFeedback=true;
+		}
+	else
+		{
+			voiceFeedback=false;
+		}
+		
+	}
 
 
     function onLoaded() 
     {	
-    	speechapi.speak("Loaded","male"); 
+    	if (voiceFeedback==true)
+		{
+    		speechapi.speak("Loaded","male"); 
+		}
+    
+		
+    	
     	//Now, on load for numerical referencing requires a vocab to be loaded
     	
     			
@@ -193,7 +214,12 @@ initialise();
 			var links=AssignLinkNumbers();// put links into index referable
 											// form
 			var myLink=links[index];// retrieve the link to be followed
-			speechapi.speak(result.text,"male");
+			
+			if (voiceFeedback==true)
+			{
+				speechapi.speak(result.text,"male"); 
+			}
+			
 			document.getElementById('link').innerHTML=myLink;
 			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
@@ -212,7 +238,11 @@ initialise();
 			var links=AssignLinkNumbers();// put links into index referable
 											// form
 			var myLink=links[index];// retrieve the link to be followed
-			speechapi.speak(result.text,"male");
+			
+			if (voiceFeedback==true)
+			{
+				speechapi.speak(result.text,"male"); 
+			}
 			document.getElementById('link').innerHTML=myLink;
 			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
