@@ -76,11 +76,11 @@ initialise();
     
     function onResult(result) 
     {   
-    	alert("onResult funciton");
+    	
     	if (popUps==true)
     	{
-    	  	alert(result.text);
-    		Trypopup(result);
+    	  	alert("We think you said: "+result.text);
+    	
     	}
     			
     			document.getElementById('answer').innerHTML = result.text;
