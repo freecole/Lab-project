@@ -7,8 +7,9 @@ var neededCommandsAndNumbersString="";
 var numericalReferenced=false;//Remember to change the library version accordingly!
 var voiceFeedback=false;
 var popUps=false;
+var highlightLink=false;
 
-var delayForVoicefeedback=1000;
+var delayForVoicefeedback=3000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 
 initialise();
@@ -48,6 +49,18 @@ initialise();
 	else
 		{
 			popUps=false;
+		}
+	}
+	
+	function activateLinkHighlighting(choice)
+	{
+		if (choice==true)
+		{
+			highlightLink=true;
+		}
+	else
+		{
+			highlightLink=false;
 		}
 		
 	}
@@ -241,6 +254,7 @@ initialise();
 			}
 			
 			document.getElementById('link').innerHTML=myLink;
+	
 			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
@@ -264,6 +278,8 @@ initialise();
 				speechapi.speak(result.text,"male"); 
 			}
 			document.getElementById('link').innerHTML=myLink;
+			if (highlightLink==true) {changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
+		//	document.getElementById().color = "red";
 			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
@@ -410,25 +426,12 @@ initialise();
 	{
 		document.location.href =mylink;// follow it
 	}
-/*	
-	function determinSpeechAPIVerion()
-	{
-		if ( numericalReferenced==true)
-			{
-				return "http://www.speechapi.com/static/lib/speechapi-1.3.js"
-			
-			}
-		else
-			{
-			return "http://www.speechapi.com/static/lib/speechapi-1.5.js"
-			}
-		
-	}
-	*/
-/*
-	function overallVisibilityAdjustment()
-	{
 
-		document.switch1.style.visibility="hidden";
-		
-	} */
+	
+	function changeLinkColour (i)
+	{
+		if(document.getElementById)
+			document.getElementById(i).color = "red";
+		else if(document.all)
+			document.all[i].color = "red";
+	}
