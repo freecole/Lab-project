@@ -42,8 +42,7 @@ function Trypopup(answer)
 	newwindow3.document.write('<p></p>');
 	newwindow3.document.write("Pop up will close in 4 seconds");
 	newwindow3.document.write('<p></p>');
-	var getValue = answer;
-	newwindow3.document.write(getValue);
+	newwindow3.document.write(answer.text);
 	
 	setTimeout('newwindow3.close()', 4000);
 	if (window.focus) // first check if the browser supports the focus 
@@ -53,6 +52,10 @@ function Trypopup(answer)
 	return false; // prevent browser from ffl the actual link
 }
 
+function showAnswer(ans)
+{
+	document.write(ans);
+}
 /*
 //checks if the correct category is selected
 function checkAnswer(quizForm,theAnswer)

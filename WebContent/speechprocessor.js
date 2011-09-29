@@ -6,7 +6,7 @@ var neededNameArray=[];
 var neededCommandsAndNumbersString="";
 var numericalReferenced=false;//Remember to change the library version accordingly!
 var voiceFeedback=false;
-var popUps=true;
+var popUps=false;
 
 var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
@@ -75,9 +75,12 @@ initialise();
 	}
     
     function onResult(result) 
-    {  if (popUps==true)
+    {   
+    	alert("onResult funciton");
+    	if (popUps==true)
     	{
-    	  Trypopup(result);
+    	  	alert(result.text);
+    		Trypopup(result);
     	}
     			
     			document.getElementById('answer').innerHTML = result.text;
@@ -108,7 +111,7 @@ initialise();
     function initialisePage()
     {
     	 setSwitchFocus(1);
-        // hideFlash();
+         hideFlash();
     	
     }
 
