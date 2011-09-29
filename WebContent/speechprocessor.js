@@ -2,34 +2,38 @@
 
 var allCommandsArray=[];
 var neededNumbersArray=[];
+var neededNameArray=[];
 var neededCommandsAndNumbersString="";
-var numericalReferenced=true;//Remember to change the library version accordingly!
+var numericalReferenced=false;//Remember to change the library version accordingly!
 var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 
-initialise(numericalReferenced);
+initialise();
 
-function initialise(bnumericalReferenced)
-{
-if (bnumericalReferenced===true)
+	function setAsNumbered(choice)
 	{
-		initialiseNumericalReference();
+		if (choice==true)
+			{
+			 numericalReferenced=true;
+			}
+		else
+			{
+			numericalReferenced=false;
+			}
+		
 	}
-else
-	{
-		initialiseNameReference();
-	}
-}
+
 
     function onLoaded() 
     {	
     	speechapi.speak("Loaded","male"); 
     	//Now, on load for numerical referencing requires a vocab to be loaded
-    	if (numericalReferenced===true)
-    		{  
-    			var neededSpeechSpace=determineArrays();
+    	
+    			
+    			var allOptionsString=determineTotalVocabulary();//Retrieves an array with all the numbers and commands or all the link names
+    			var neededSpeechSpace=determineSpecificVocab(allOptionsString);//Reduces the numbers array to only use number vocab that is needed
     			speechapi.setupRecognition("SIMPLE", neededSpeechSpace ,false);
-    		}
+    	
     
     		
         //Put something here that shows an image to indicate that the flash player is ready... 
@@ -37,21 +41,18 @@ else
     
     function onResult(result) 
     { 
-    	if (numericalReferenced===true)
-    		{
+    
     			document.getElementById('answer').innerHTML = result.text;
     			processResult(result);
     			
-    			
-    		}
-    	
+  
     }
      
 	function onFinishTTS() { }
 	
     
     //This function performs the basic setup for the numerically referenced pages
-    function initialiseNumericalReference()
+    function initialise()
     {
     	   
         var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
@@ -64,31 +65,6 @@ else
         setTimeout("initialisePage()",1000);
   
     }
-    //This function is in contrast to the initialiseNumericalReference function as it sets up the engine to rather reference links by name
-    function initialiseNameReference()
-    {
-        var linkables = ["a"];
-        var speakables = [];
-        var focusables =[];
-        var browserControl = false;
-        var formsEnabled = false;
-
-        function onTtsComplete() {}
-        function onResult(result) {}
-        function onLoaded() {}
-
-        var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
-        //var flashvars = {speechServer : "rtmp://www.speechapi.com:1935/firstapp"};
-        var params = {allowscriptaccess : "always"};
-        var attributes = {};
-        attributes.id = "flashContent";
-        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.7.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
-        speechapi.setupPage("freecole","0706009y",onResult,onTtsComplete, onLoaded, "flashContent",linkables,speakables,focusables,browserControl,formsEnabled);
-    	
-        setTimeout("initialisePage()",1000);
-       
-       
-    }
     
     //Focuses on the buttons and hides the flash
     function initialisePage()
@@ -97,10 +73,66 @@ else
         // hideFlash();
     	
     }
+
+    function determineTotalVocabulary()
+    {
+    	 //if spoken link name is true, create this array by looping through all the links
+		var allOptionsString="";
+		//If this is not going to be numerically referenced, we need to create a vocabulary by extracting the link names and putting them in an alloptionsstring
+		if (numericalReferenced==false)
+			{
+				allOptionsString=assignLinkWords();
+			
+			}
+		else if (numericalReferenced==true) //otherwise, we assign a numerical vocabulary
+			{
+				allOptionsString="command down,command up,command back,command forward,command home,one,two,three,four,five,six,seven,eight,nine,ten";// list
+			}
+		return allOptionsString;
+    	
+    }
     
-	function determineArrays()
+    function assignLinkWords() 
+	{	
+		var linkCount=document.links.length;
+		var wordNumbers=[]; // An array to store number link assosiations
+		var theLink="empty";
+		var i=0;
+		for (i=0; i<linkCount; i++) 
+		{
+			theLink = (document.links[i].name);
+			wordNumbers[i]=theLink;
+		}
+	
+		return wordNumbers.toString();
+	}
+    
+    function determineSpecificVocab(allOptionsString)
+    {
+     var vocab="";	
+    	if (numericalReferenced==false)
+		{
+    		vocab=determineSpecificLinkNamesString(allOptionsString);
+		
+		}
+	else if (numericalReferenced==true) //otherwise, we assign a numerical vocabulary
+		{
+			vocab=determineSpecificNumericalString(allOptionsString);
+		}
+    
+     return vocab;
+    }
+    //For now the function simply returns what it is given as allOptionsDoes not yet contain commands or additional names
+    function determineSpecificLinkNamesString(allOptionsString)
+    {
+    	
+    //	neededNumbersArray=allOptionsString;
+    	neededNameArray=allOptionsString.split(',');//Turn into an array and store
+    	return allOptionsString;
+    	
+    }
+	function determineSpecificNumericalString(allOptionsString)
 	{ 
-		var allOptionsString="command down,command up,command back,command forward,command home,one,two,three,four,five,six,seven,eight,nine,ten";// list
 																																					
 		oneIndex=allOptionsString.indexOf("one");
 		if (oneIndex !=-1)
@@ -129,6 +161,7 @@ else
 			neededCommandsAndNumbersString=neededCommandsAndNumbersArray.toString();
 			// Convert back to string
 			
+			//Without the link numbers that are not needed
 			return neededCommandsAndNumbersString;
 			}
 		
@@ -138,18 +171,40 @@ else
 // General purpose functions
 	function processResult(result)
 	{
-		if (!tryProcessResultAsCommand(result))
-		{	
-			tryProcessResultAsLink(result);
+		if (numericalReferenced==false)
+			{
+				tryProcessResultAsLinkName(result);	
+			}
+		else if (numericalReferenced==true)
+			{
+				if (!tryProcessResultAsCommand(result))
+					{	
+						tryProcessResultAsLink(result);
+					}
+			
+			}
+			
+	}
+	
+	function tryProcessResultAsLinkName(result)
+	{
+		var index=searchForLinkNameIndex(result);
+		if (index !=-1){ // if link exists, follow link
+			var links=AssignLinkNumbers();// put links into index referable
+											// form
+			var myLink=links[index];// retrieve the link to be followed
+			speechapi.speak(result.text,"male");
+			document.getElementById('link').innerHTML=myLink;
+			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
+	
 		}
 		
-			
 	}
 	
 	// Checks to see if a link number was called
 	function tryProcessResultAsLink(result)
 	{
-		var index=searchForLinkIndex(result);// find index used to follow
+		var index=searchForLinkNumberIndex(result);// find index used to follow
 												// links
 		// document.getElementById('index').innerHTML=index.text;
 	
@@ -192,7 +247,7 @@ else
 	}
 	
 	
-
+//stores the URLS corresponding to the different link numbers
 	function AssignLinkNumbers() 
 	{	
 		var linkCount=document.links.length;
@@ -209,7 +264,7 @@ else
 	}
 	// Note:This searches a clean array with no commands because it is used to
 	// align commands with links
-	function searchForLinkIndex(result)
+	function searchForLinkNumberIndex(result)
 	{
 		var i=0;
 		for (i=0; i<neededNumbersArray.length; i++) 
@@ -223,6 +278,23 @@ else
 	
 		return -1;
 	}
+	
+	function searchForLinkNameIndex(result)
+	{
+		var i=0;
+		for (i=0; i<neededNameArray.length; i++) 
+		{ var x=neededNameArray[i].toUpperCase();
+		  var y=result.text.toUpperCase();
+			if (x==y) 
+			{
+				return i;
+				
+			} 
+		}
+	
+		return -1;
+	}
+	
 	
 
 	function searchForCommandIndex(result){
