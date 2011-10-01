@@ -5,7 +5,7 @@ var neededNumbersArray=[];
 var neededNameArray=[];
 var neededCommandsAndNumbersString="";
 //Will enable visual display of how far the PI process gets
-var debugmode=true;
+var debugmode=false;
 
 //The following highlight different operating modes and feedback modes
 var numericalReferenced=false;//Remember to change the library version accordingly!
@@ -70,7 +70,7 @@ initialise();
 	}
   //This function performs the basic setup for the numerically referenced pages
     function initialise()
-    {
+    {	
     	   
         var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
         var params = {allowscriptaccess : "always"};
@@ -260,7 +260,7 @@ initialise();
 				speechapi.speak(result.text,"male"); 
 			}
 			
-			document.getElementById('link').innerHTML=myLink;
+			//document.getElementById('link').innerHTML=myLink;
 	
 			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
@@ -284,7 +284,7 @@ initialise();
 			{
 				speechapi.speak(result.text,"male"); 
 			}
-			document.getElementById('link').innerHTML=myLink;
+			//document.getElementById('link').innerHTML=myLink;
 			if (highlightLink==true) {changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
 		//	document.getElementById().color = "red";
 			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
