@@ -34,28 +34,28 @@ function question(i)
 	document.writeln(myArray[i]);
 }
 
-function setup(option)
+function setup()
 {
-	if (option == true)
-	{
-		document.write('<font size="4" color="purple"><b><i>Speech api is setting up..</i></b></font>');
-		
-	}
-	else
-	{
-		document.write('<font size="4" color="purple"><b><i>Speech api is not set up!!</i></b></font>');
-	}
+		//document.write('<font size="4" color="purple"><b><i>Speech api is setting up..</i></b></font>', this);
+		alert("1) API has been setup");	
 	
 }
 
-function loaded(option)
+function loaded()
 {
-	if (option == true)
-	{
-		document.write('<font size="4" color="purple"><b><i>Speech api loaded.</i></b></font>');
-	}
-	else
-	{
-		document.write('<font size="4" color="purple"><b><i>Speech api has not loaded!!</i></b></font>');
-	}
+	alert("2) API has loaded the flash");
+		//document.write('<font size="4" color="purple"><b><i>Speech api loaded.</i></b></font>', this);
+}
+
+
+function vocabSetup()
+{	alert("3) Vocab has been setup successfully.");//Perhaps show vocab. 
+		//document.write('<font size="4" color="purple"><b><i>Speech api loaded.</i></b></font>', this);
+
+}
+
+function resultReturned(stringresult)
+{		alert("4) Result has been returned and is:"+stringresult);
+		//document.write('<font size="4" color="purple"><b><i>Speech api loaded.</i></b></font>', this);
+
 }

@@ -4,6 +4,10 @@ var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededNameArray=[];
 var neededCommandsAndNumbersString="";
+//Will enable visual display of how far the PI process gets
+var debugmode=true;
+
+//The following highlight different operating modes and feedback modes
 var numericalReferenced=false;//Remember to change the library version accordingly!
 var voiceFeedback=false;
 var popUps=false;
@@ -64,10 +68,24 @@ initialise();
 		}
 		
 	}
-
+  //This function performs the basic setup for the numerically referenced pages
+    function initialise()
+    {
+    	   
+        var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
+        var params = {allowscriptaccess : "always"};
+        var attributes = {};
+        attributes.id = "flashContent";
+        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.6.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
+        speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
+        
+		if (debugmode==true) {setup();}//This shows an image indicating that the API has been setup
+        setTimeout("initialisePage()",1000);
+  
+    }
 
     function onLoaded() 
-    {	
+    {	if (debugmode==true) {loaded();}//Shows that the API has been loaded successfully
     	if (voiceFeedback==true)
 		{
     		speechapi.speak("Loaded","male"); 
@@ -81,14 +99,16 @@ initialise();
     			var allOptionsString=determineTotalVocabulary();//Retrieves an array with all the numbers and commands or all the link names
     			var neededSpeechSpace=determineSpecificVocab(allOptionsString);//Reduces the numbers array to only use number vocab that is needed
     			speechapi.setupRecognition("SIMPLE", neededSpeechSpace ,false);
-    	
+				
+				if (debugmode==true) {vocabSetup();}
+				
     
     		
         //Put something here that shows an image to indicate that the flash player is ready... 
 	}
     
     function onResult(result) 
-    {   
+    {   if (debugmode==true) {resultReturned(result.text);}
     	
     	if (popUps==true)
     	{
@@ -105,20 +125,7 @@ initialise();
 	function onFinishTTS() { }
 	
     
-    //This function performs the basic setup for the numerically referenced pages
-    function initialise()
-    {
-    	   
-        var flashvars = {speechServer : "http://www.speechapi.com:8000/speechcloud"};
-        var params = {allowscriptaccess : "always"};
-        var attributes = {};
-        attributes.id = "flashContent";
-        swfobject.embedSWF("http://www.speechapi.com/static/lib/speechapi-1.6.swf", "myAlternativeContent", "215", "138", "9.0.28", false,flashvars, params, attributes);
-        speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
-        
-        setTimeout("initialisePage()",1000);
-  
-    }
+   
     
     //Focuses on the buttons and hides the flash
     function initialisePage()
