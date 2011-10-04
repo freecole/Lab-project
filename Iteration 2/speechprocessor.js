@@ -215,6 +215,8 @@ initialise();
 												// needed
 			neededNumbersArray=allNumbersArray.slice(0,linkCount);
 			
+			changeLinkNameToReflectNumber(neededNumbersArray);//This will put the link numbers in the actual link names on the HTML page
+			
 			// join the needed commands and needed numbers
 			// allCommandsArray.push(",");//A comma which will be used for
 			// joining the two arrays
@@ -227,6 +229,16 @@ initialise();
 			return neededCommandsAndNumbersString;
 			}
 		
+	}
+	
+	function changeLinkNameToReflectNumber(neededNumbersArray)
+	{
+		var i=0;
+			for (i=0;i<neededNumbersArray.length;i++)
+			{
+			 var toWrite=i+1;
+			 document.links[i].innerHTML="["+toWrite+"] "+document.links[i].innerHTML;
+			}
 	}
    
 
@@ -281,11 +293,7 @@ initialise();
 											// form
 			var myLink=links[index];// retrieve the link to be followed
 			
-			var i=0;
-			for (i=0;i<links.length;i++)
-			{
-			 document.links[i].innerHTML="1: "+document.links[i].innerHTML;
-			}
+			
 			
 			//alert(links.toString());
 			if (voiceFeedback==true)
