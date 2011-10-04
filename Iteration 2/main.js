@@ -14,4 +14,3 @@ function date_time()
     var sec = today_date.getSeconds();
     document.writeln(hour + ":" + mins + ":" + sec);
 }
-
