@@ -13,7 +13,7 @@ var debugmode=false;
 var numericalReferenced=false;//Remember to change the library version accordingly!
 var voiceFeedback=false;
 var popUps=false;
-var highlightLink=false;
+var highlightLink=true;
 var confirmationMode=false;//By default, no commad mode on
 var delayForVoicefeedback=3000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
@@ -329,7 +329,9 @@ initialise();
 				speechapi.speak(result.text,"male"); 
 			}
 			//document.getElementById('link').innerHTML=myLink;
-			if (highlightLink==true) {changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
+			if (highlightLink==true) {
+			changeLinkIDs();//Assign each font element the appropriate id
+			changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
 	
 			changeToConfirmationMode(myLink);
 			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
@@ -511,4 +513,32 @@ initialise();
 			document.getElementById(i).color = "red";
 		else if(document.all)
 			document.all[i].color = "red";
+	}
+	//Adapted from http://javascript.about.com/library/bldom08.htm
+	//Creates a function that allows us to search for elements by a certain class
+	document.getElementsByClassName = function(cl) 
+	{
+		var retNode = [];
+		var myClass = new RegExp('\\b'+cl+'\\b');
+		var element = this.getElementsByTagName('*');
+		for (var i = 0; i < element.length; i++) {
+			var classes = element[i].className;
+		if (myClass.test(classes)) retNode.push(element[i]);
+	}
+		return retNode;
+	}; 
+	//This function cycles through all the font elements that contrinute to link highlight and assigns them the appropriate reference
+	function changeLinkIDs()
+	{
+	var canHighlight=document.getElementsByClassName('tobered');
+	 var i=0;
+	 
+	 for (i=0;i<canHighlight.length;i++)
+	 {  //element.attributeName = 'value'
+		document.getElementsByClassName('tobered')[i].id=neededNumbersArray[i];
+	 }
+	 //var one=document.getElementsByClassName('tobered')[1].id;
+	 //alert(one);
+		
+	
 	}
