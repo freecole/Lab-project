@@ -465,7 +465,7 @@ initialise();
 	
 	function hideFlash()
 	{
-	
+		
 		//flashObjs = document.getElementsByTagName("div");
 		flashObj=document.getElementById("flashContent");
 		flashObj.style.visibility = "hidden";
@@ -477,7 +477,7 @@ initialise();
 	
 		document.getElementById(speechapi.containerID).startRecognition();
 		//var t=setTimeout("myStopRecognition()",1500);
-		setSwitchFocus(2);
+		//setSwitchFocus(2);
  
 		
 	}
@@ -486,7 +486,7 @@ initialise();
 	{
 	
 		document.getElementById(speechapi.containerID).stopRecognition();
-		setSwitchFocus(1);
+		//setSwitchFocus(1);
 	//startRecogntion(); 
 		
 	}
