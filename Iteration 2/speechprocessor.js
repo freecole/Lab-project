@@ -14,11 +14,13 @@ var numericalReferenced=false;//Remember to change the library version according
 var voiceFeedback=false;
 var popUps=false;
 var highlightLink=true;
+var highlightColour="Red";//Sets the colour of link highlighting 
 var confirmationMode=false;//By default, no commad mode on
 var delayForVoicefeedback=3000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 
 var linkAwaitingConfirmation="empty";
+var lastResult="no result";
 
 initialise();
 
@@ -331,9 +333,9 @@ initialise();
 			//document.getElementById('link').innerHTML=myLink;
 			if (highlightLink==true) {
 			changeLinkIDs();//Assign each font element the appropriate id
-			changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
+			changeLinkColour(result.text.toLowerCase(),highlightColour);};//Change the link colour on selection if activated
 	
-			changeToConfirmationMode(myLink);
+			changeToConfirmationMode(myLink,result.text);
 			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
@@ -373,6 +375,7 @@ initialise();
 				{
 				confirmationMode=false;
 				onLoaded();//Set up the original vocabulary again
+				 changeLinkColour (lastResult,"blue");
 				 //undo highlighting
 				}
 			else if (answer=="YES")
@@ -399,9 +402,10 @@ initialise();
 		return urlnumbers;
 	}
 	
-	function changeToConfirmationMode(myLink)
+	function changeToConfirmationMode(myLink,name)
 	{
 	 confirmationMode=true;//This will divert flow of program from the onLoaded point onward
+	 lastResult=name; //set the global variable for use in confirmation mode (need to access the previous result)
 	 linkAwaitingConfirmation=myLink;//Assign to global
 	 //highlight the link
 	 onLoaded();//Force it 
@@ -507,12 +511,12 @@ initialise();
 	}
 
 	
-	function changeLinkColour (i)
+	function changeLinkColour (i,colour)
 	{
 		if(document.getElementById)
-			document.getElementById(i).color = "red";
+			document.getElementById(i).color = colour;
 		else if(document.all)
-			document.all[i].color = "red";
+			document.all[i].color = colour;
 	}
 	//Adapted from http://javascript.about.com/library/bldom08.htm
 	//Creates a function that allows us to search for elements by a certain class
@@ -537,8 +541,6 @@ initialise();
 	 {  //element.attributeName = 'value'
 		document.getElementsByClassName('tobered')[i].id=neededNumbersArray[i];
 	 }
-	 //var one=document.getElementsByClassName('tobered')[1].id;
-	 //alert(one);
-		
+
 	
 	}
