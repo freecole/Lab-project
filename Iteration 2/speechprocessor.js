@@ -3,6 +3,8 @@
 var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededNameArray=[];
+var neededConfirmationsArray=[];
+
 var neededCommandsAndNumbersString="";
 //Will enable visual display of how far the PI process gets
 var debugmode=false;
@@ -12,9 +14,11 @@ var numericalReferenced=false;//Remember to change the library version according
 var voiceFeedback=false;
 var popUps=false;
 var highlightLink=false;
-
+var confirmationMode=false;//By default, no commad mode on
 var delayForVoicefeedback=3000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
+
+var linkAwaitingConfirmation="empty";
 
 initialise();
 
@@ -140,8 +144,12 @@ initialise();
     {
     	 //if spoken link name is true, create this array by looping through all the links
 		var allOptionsString="";
-		//If this is not going to be numerically referenced, we need to create a vocabulary by extracting the link names and putting them in an alloptionsstring
-		if (numericalReferenced==false)
+
+		if (confirmationMode==true) //perform this check first as you dont want to change the state of numerical and spoken link referecning every time a confirmation mode changes
+			{
+				allOptionsString="yes,no";
+			}
+		else if (numericalReferenced==false)
 			{
 				allOptionsString=assignLinkWords();
 			
@@ -150,6 +158,7 @@ initialise();
 			{
 				allOptionsString="command down,command up,command back,command forward,command home,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eightteen,nineteen,twenty";// list
 			}
+		
 		return allOptionsString;
     	
     }
@@ -172,7 +181,11 @@ initialise();
     function determineSpecificVocab(allOptionsString)
     {
      var vocab="";	
-    	if (numericalReferenced==false)
+		if (confirmationMode==true)
+		{ //although it returns the same thing, it also loades the neededConfirmationsArray
+			vocab=determineSpecificConfirmationsString(allOptionsString);
+		}
+    else if (numericalReferenced==false)
 		{
     		vocab=determineSpecificLinkNamesString(allOptionsString);
 		
@@ -181,6 +194,7 @@ initialise();
 		{
 			vocab=determineSpecificNumericalString(allOptionsString);
 		}
+	
     
      return vocab;
     }
@@ -188,8 +202,17 @@ initialise();
     function determineSpecificLinkNamesString(allOptionsString)
     {
     	
-    //	neededNumbersArray=allOptionsString;
+
     	neededNameArray=allOptionsString.split(',');//Turn into an array and store
+    	return allOptionsString;
+    	
+    }
+	//For consistency, a sperate function was created for this. What if additinal commands are needed in the furure. 
+	 function determineSpecificConfirmationsString(allOptionsString)
+    {
+    	
+
+    	neededConfirmationsArray=allOptionsString.split(',');//Turn into an array and store
     	return allOptionsString;
     	
     }
@@ -244,8 +267,13 @@ initialise();
 
 // General purpose functions
 	function processResult(result)
-	{
-		if (numericalReferenced==false)
+	{	
+		if (confirmationMode==true)
+			{
+				tryProcessConfirmation(result);
+			}
+			
+		else if (numericalReferenced==false)
 			{
 				tryProcessResultAsLinkName(result);	
 			}
@@ -255,8 +283,8 @@ initialise();
 					{	
 						tryProcessResultAsLink(result);
 					}
-			
 			}
+		
 			
 	}
 	
@@ -302,8 +330,9 @@ initialise();
 			}
 			//document.getElementById('link').innerHTML=myLink;
 			if (highlightLink==true) {changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
-		//	document.getElementById().color = "red";
-			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
+	
+			changeToConfirmationMode(myLink);
+			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
 	}
@@ -335,6 +364,22 @@ initialise();
 		
 	}
 	
+	function tryProcessConfirmation(result)
+		{
+			var answer=result.text.toUpperCase();
+			if (answer=="NO")
+				{
+				confirmationMode=false;
+				onLoaded();//Set up the original vocabulary again
+				 //undo highlighting
+				}
+			else if (answer=="YES")
+				{	confirmationMode=false;//Set back to the other mode 
+					navigate(linkAwaitingConfirmation);//navigate
+				}
+		
+		
+		}
 	
 //stores the URLS corresponding to the different link numbers
 	function AssignLinkNumbers() 
@@ -351,6 +396,15 @@ initialise();
 	
 		return urlnumbers;
 	}
+	
+	function changeToConfirmationMode(myLink)
+	{
+	 confirmationMode=true;//This will divert flow of program from the onLoaded point onward
+	 linkAwaitingConfirmation=myLink;//Assign to global
+	 //highlight the link
+	 onLoaded();//Force it 
+	}
+	
 	// Note:This searches a clean array with no commands because it is used to
 	// align commands with links
 	function searchForLinkNumberIndex(result)
