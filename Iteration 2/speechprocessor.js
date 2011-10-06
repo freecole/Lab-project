@@ -20,7 +20,7 @@ var delayForVoicefeedback=3000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 
 var linkAwaitingConfirmation="empty";
-var lastResult="no result";
+var lastResult="none";//Used for the confirmation. Need to know last result so that colour reversion can occure
 
 initialise();
 
@@ -257,13 +257,15 @@ initialise();
 	}
 	
 	function changeLinkNameToReflectNumber(neededNumbersArray)
-	{
-		var i=0;
+	{ //only update the numbering if this is the first time a page is being called 
+		if (lastResult=="none") 
+		{var i=0;
 			for (i=0;i<neededNumbersArray.length;i++)
 			{
 			 var toWrite=i+1;
 			 document.links[i].innerHTML="["+toWrite+"] "+document.links[i].innerHTML;
 			}
+		}
 	}
    
 
