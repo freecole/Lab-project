@@ -11,12 +11,12 @@ var debugmode=false;
 
 //The following highlight different operating modes and feedback modes
 var numericalReferenced=false;//Remember to change the library version accordingly!
-var voiceFeedback=false;
+var voiceFeedback=true;
 var popUps=false;
 var highlightLink=true;
 var highlightColour="Red";//Sets the colour of link highlighting 
 var confirmationMode=false;//By default, no commad mode on
-var delayForVoicefeedback=3000;
+var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
 
 var linkAwaitingConfirmation="empty";
@@ -92,11 +92,12 @@ initialise();
 
     function onLoaded() 
     {	if (debugmode==true) {loaded();}//Shows that the API has been loaded successfully
-    	if (voiceFeedback==true)
+ /*   
+ 	if ((voiceFeedback==true) &&  (confirmationMode==false)) //Make sure that loaded is not said when it is not confirmation mode!
 		{
     		speechapi.speak("Loaded","male"); 
 		}
-    
+	*/	
 		
     	
     	//Now, on load for numerical referencing requires a vocab to be loaded
@@ -158,7 +159,7 @@ initialise();
 			}
 		else if (numericalReferenced==true) //otherwise, we assign a numerical vocabulary
 			{
-				allOptionsString="command down,command up,command back,command forward,command home,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eightteen,nineteen,twenty";// list
+				allOptionsString="down,up,back,forward,home,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eightteen,nineteen,twenty";// list
 			}
 		
 		return allOptionsString;
@@ -355,13 +356,16 @@ initialise();
 				setTimeout(scrollup, delayForVoicefeedback);
 				break;
 		case 2:	speechapi.speak("Back","male");
-				setTimeout(goback, delayForVoicefeedback);
+				//setTimeout(goback, delayForVoicefeedback);
+				changeToConfirmationMode("empty link",result.text);
 				break;
 		case 3:	speechapi.speak("Forward","male");
-				setTimeout(goforward, delayForVoicefeedback);
+				//setTimeout(goforward, delayForVoicefeedback);
+				changeToConfirmationMode("empty link",result.text);
 				break;
 		case 4:	speechapi.speak("Home","male");
-				setTimeout("gohome()",delayForVoicefeedback);
+				//setTimeout("gohome()",delayForVoicefeedback);
+				changeToConfirmationMode("empty link",result.text);
 				break;
 		default:return false; 
 		}
@@ -373,20 +377,54 @@ initialise();
 	function tryProcessConfirmation(result)
 		{
 			var answer=result.text.toUpperCase();
+			
 			if (answer=="NO")
-				{
+				{speechapi.speak("No","male"); 
 				confirmationMode=false;
 				onLoaded();//Set up the original vocabulary again
-				 changeLinkColour (lastResult,"blue");
-				 //undo highlighting
+				
+				 changeLinkColour (lastResult,"blue");//Create conditional check (may be a command and not a link number...)
+			
 				}
 			else if (answer=="YES")
-				{	confirmationMode=false;//Set back to the other mode 
-					navigate(linkAwaitingConfirmation);//navigate
+				{	speechapi.speak("Yes","male"); 
+					confirmationMode=false;//Set back to the other mode 
+					var command=checkResultIsCommand(lastResult);
+					if (command==true)
+					{
+						processConfirmationTypeCommand(lastResult);
+					
+					}		
+					else setTimeout(navigate,delayForVoicefeedback,linkAwaitingConfirmation); 
+					//navigate(linkAwaitingConfirmation);//result is not a command but a link. Thus, navigate
 				}
 		
 		
 		}
+		
+	function checkResultIsCommand(theLastResult)
+	{
+		if  ((theLastResult.toUpperCase()=="HOME") || (theLastResult.toUpperCase()=="BACK") || (theLastResult.toUpperCase()=="FORWARD"))
+			{
+				return true;
+			}
+		else
+		return false;
+	}
+	
+	function processConfirmationTypeCommand(lastResult)
+	{
+		if (lastResult.toUpperCase()=="HOME") 
+		{setTimeout("gohome()",delayForVoicefeedback);}
+		else if (lastResult.toUpperCase()=="BACK")
+		{setTimeout(goback, delayForVoicefeedback);}
+		else if
+		(astResult.toUpperCase()=="FORWARD")
+		{setTimeout(goforward, delayForVoicefeedback);}
+		else alert("processConfirmationTypeCommand does not consider the issued command to be a confirmation type command.");
+	
+	
+	}
 	
 //stores the URLS corresponding to the different link numbers
 	function AssignLinkNumbers() 
