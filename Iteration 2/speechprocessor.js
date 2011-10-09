@@ -159,7 +159,7 @@ initialise();
 			}
 		else if (numericalReferenced==true) //otherwise, we assign a numerical vocabulary
 			{
-				allOptionsString="down,up,back,forward,home,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eightteen,nineteen,twenty";// list
+				allOptionsString="down,up,backwards,forward,home,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eightteen,nineteen,twenty";// list
 			}
 		
 		return allOptionsString;
@@ -289,6 +289,7 @@ initialise();
 						tryProcessResultAsLink(result);
 					}
 			}
+			
 		
 			
 	}
@@ -342,6 +343,8 @@ initialise();
 			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
+		else speechapi.speak("Please say again","male");
+		
 	}
 	
 	// checks to see if a command was called
@@ -355,7 +358,7 @@ initialise();
 		case 1:	speechapi.speak("Up","male");
 				setTimeout(scrollup, delayForVoicefeedback);
 				break;
-		case 2:	speechapi.speak("Back","male");
+		case 2:	speechapi.speak("Backwards","male");
 				//setTimeout(goback, delayForVoicefeedback);
 				changeToConfirmationMode("empty link",result.text);
 				break;
@@ -404,7 +407,7 @@ initialise();
 		
 	function checkResultIsCommand(theLastResult)
 	{
-		if  ((theLastResult.toUpperCase()=="HOME") || (theLastResult.toUpperCase()=="BACK") || (theLastResult.toUpperCase()=="FORWARD"))
+		if  ((theLastResult.toUpperCase()=="HOME") || (theLastResult.toUpperCase()=="BACKWARDS") || (theLastResult.toUpperCase()=="FORWARD"))
 			{
 				return true;
 			}
@@ -416,11 +419,11 @@ initialise();
 	{
 		if (lastResult.toUpperCase()=="HOME") 
 		{setTimeout("gohome()",delayForVoicefeedback);}
-		else if (lastResult.toUpperCase()=="BACK")
-		{setTimeout(goback, delayForVoicefeedback);}
+		else if (lastResult.toUpperCase()=="BACKWARDS")
+		{setTimeout("goback()", delayForVoicefeedback);}
 		else if
-		(astResult.toUpperCase()=="FORWARD")
-		{setTimeout(goforward, delayForVoicefeedback);}
+		(lastResult.toUpperCase()=="FORWARD")
+		{setTimeout("goforward()", delayForVoicefeedback);}
 		else alert("processConfirmationTypeCommand does not consider the issued command to be a confirmation type command.");
 	
 	
@@ -464,7 +467,7 @@ initialise();
 				
 			} 
 		}
-	
+		
 		return -1;
 	}
 	
