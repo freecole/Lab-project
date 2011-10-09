@@ -137,7 +137,7 @@ initialise();
     //Focuses on the buttons and hides the flash
     function initialisePage()
     {
-    	 setSwitchFocus(1);
+    	setSwitchFocus();//focuses on an page element so keypress works
          hideFlash();
     	
     }
@@ -477,7 +477,7 @@ initialise();
 	
 		document.getElementById(speechapi.containerID).startRecognition();
 		//var t=setTimeout("myStopRecognition()",1500);
-		//setSwitchFocus(2);
+		
  
 		
 	}
@@ -486,25 +486,19 @@ initialise();
 	{
 	
 		document.getElementById(speechapi.containerID).stopRecognition();
-		//setSwitchFocus(1);
+		
 	//startRecogntion(); 
 		
 	}
 
  //alternate the focus of the switches when keys are pressed 
-	function setSwitchFocus(switchnum)
-	{
-	 if ((switchnum ==1) || (switchnum ==2))
-		 {
-		 
-		 	document.getElementById("switch"+switchnum).focus();
-		 	if (switchnum==2)
-	     	{
-		 		switchnum=1;
-	    	 }
-		 	else switchnum=2;
-	     
-		 }
+	function setSwitchFocus()
+	{	//If there are links, focus on the first one.
+		if (document.links.length>1)
+		{
+			document.links[0].focus();
+		}
+	
 	} 
 	
 	function navigate(mylink)

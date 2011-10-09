@@ -12,7 +12,7 @@ function keyDown(e)
  if (downActive==false) //do not allow reactivation until the key has gone up
 	{
 	code=determineCode(e);
-	if (code==32) {
+	if (code==17) {
 	downActive=true;
 	myStartRecognition();
 	}
@@ -28,7 +28,7 @@ function keyUp(e)
 {
 	code=determineCode(e);
 	
-	if (code==32) 
+	if (code==17) 
 	 { 
 	  downActive=false;//since it is up, it is no longer down...
 	  myStopRecognition();
