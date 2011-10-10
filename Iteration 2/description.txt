@@ -1,0 +1,5 @@
+Iteration 2
+
+Begin with a tutorial and show users how to use the application.
+
+Thereafter the the efficiency and preference between numerical and spoken link name referencing techniques are assesed.

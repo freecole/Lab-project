@@ -3,18 +3,24 @@
 var allCommandsArray=[];
 var neededNumbersArray=[];
 var neededNameArray=[];
+var neededConfirmationsArray=[];
+
 var neededCommandsAndNumbersString="";
 //Will enable visual display of how far the PI process gets
 var debugmode=false;
 
 //The following highlight different operating modes and feedback modes
 var numericalReferenced=false;//Remember to change the library version accordingly!
-var voiceFeedback=false;
+var voiceFeedback=true;
 var popUps=false;
-var highlightLink=false;
-
-var delayForVoicefeedback=3000;
+var highlightLink=true;
+var highlightColour="Red";//Sets the colour of link highlighting 
+var confirmationMode=false;//By default, no commad mode on
+var delayForVoicefeedback=1000;
 //Decide whether or not to set up a numerical referencing system or a spoken link name referencing system
+
+var linkAwaitingConfirmation="empty";
+var lastResult="none";//Used for the confirmation. Need to know last result so that colour reversion can occure
 
 initialise();
 
@@ -86,11 +92,12 @@ initialise();
 
     function onLoaded() 
     {	if (debugmode==true) {loaded();}//Shows that the API has been loaded successfully
-    	if (voiceFeedback==true)
+ /*   
+ 	if ((voiceFeedback==true) &&  (confirmationMode==false)) //Make sure that loaded is not said when it is not confirmation mode!
 		{
     		speechapi.speak("Loaded","male"); 
 		}
-    
+	*/	
 		
     	
     	//Now, on load for numerical referencing requires a vocab to be loaded
@@ -98,6 +105,7 @@ initialise();
     			
     			var allOptionsString=determineTotalVocabulary();//Retrieves an array with all the numbers and commands or all the link names
     			var neededSpeechSpace=determineSpecificVocab(allOptionsString);//Reduces the numbers array to only use number vocab that is needed
+			//	alert(neededSpeechSpace);
     			speechapi.setupRecognition("SIMPLE", neededSpeechSpace ,false);
 				
 				if (debugmode==true) {vocabSetup();}
@@ -130,7 +138,7 @@ initialise();
     //Focuses on the buttons and hides the flash
     function initialisePage()
     {
-    	 setSwitchFocus(1);
+    	setSwitchFocus();//focuses on an page element so keypress works
          hideFlash();
     	
     }
@@ -139,16 +147,21 @@ initialise();
     {
     	 //if spoken link name is true, create this array by looping through all the links
 		var allOptionsString="";
-		//If this is not going to be numerically referenced, we need to create a vocabulary by extracting the link names and putting them in an alloptionsstring
-		if (numericalReferenced==false)
+
+		if (confirmationMode==true) //perform this check first as you dont want to change the state of numerical and spoken link referecning every time a confirmation mode changes
+			{
+				allOptionsString="yes,no";
+			}
+		else if (numericalReferenced==false)
 			{
 				allOptionsString=assignLinkWords();
 			
 			}
 		else if (numericalReferenced==true) //otherwise, we assign a numerical vocabulary
 			{
-				allOptionsString="command down,command up,command back,command forward,command home,one,two,three,four,five,six,seven,eight,nine,ten";// list
+				allOptionsString="down,up,backwards,forward,home,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eightteen,nineteen,twenty";// list
 			}
+		
 		return allOptionsString;
     	
     }
@@ -171,7 +184,11 @@ initialise();
     function determineSpecificVocab(allOptionsString)
     {
      var vocab="";	
-    	if (numericalReferenced==false)
+		if (confirmationMode==true)
+		{ //although it returns the same thing, it also loades the neededConfirmationsArray
+			vocab=determineSpecificConfirmationsString(allOptionsString);
+		}
+    else if (numericalReferenced==false)
 		{
     		vocab=determineSpecificLinkNamesString(allOptionsString);
 		
@@ -180,6 +197,7 @@ initialise();
 		{
 			vocab=determineSpecificNumericalString(allOptionsString);
 		}
+	
     
      return vocab;
     }
@@ -187,8 +205,17 @@ initialise();
     function determineSpecificLinkNamesString(allOptionsString)
     {
     	
-    //	neededNumbersArray=allOptionsString;
+
     	neededNameArray=allOptionsString.split(',');//Turn into an array and store
+    	return allOptionsString;
+    	
+    }
+	//For consistency, a sperate function was created for this. What if additinal commands are needed in the furure. 
+	 function determineSpecificConfirmationsString(allOptionsString)
+    {
+    	
+
+    	neededConfirmationsArray=allOptionsString.split(',');//Turn into an array and store
     	return allOptionsString;
     	
     }
@@ -214,6 +241,8 @@ initialise();
 												// needed
 			neededNumbersArray=allNumbersArray.slice(0,linkCount);
 			
+			changeLinkNameToReflectNumber(neededNumbersArray);//This will put the link numbers in the actual link names on the HTML page
+			
 			// join the needed commands and needed numbers
 			// allCommandsArray.push(",");//A comma which will be used for
 			// joining the two arrays
@@ -227,12 +256,29 @@ initialise();
 			}
 		
 	}
+	
+	function changeLinkNameToReflectNumber(neededNumbersArray)
+	{ //only update the numbering if this is the first time a page is being called 
+		if (lastResult=="none") 
+		{var i=0;
+			for (i=0;i<neededNumbersArray.length;i++)
+			{
+			 var toWrite=i+1;
+			 document.links[i].innerHTML="["+toWrite+"] "+document.links[i].innerHTML;
+			}
+		}
+	}
    
 
 // General purpose functions
 	function processResult(result)
-	{
-		if (numericalReferenced==false)
+	{	
+		if (confirmationMode==true)
+			{
+				tryProcessConfirmation(result);
+			}
+			
+		else if (numericalReferenced==false)
 			{
 				tryProcessResultAsLinkName(result);	
 			}
@@ -242,8 +288,9 @@ initialise();
 					{	
 						tryProcessResultAsLink(result);
 					}
-			
 			}
+			
+		
 			
 	}
 	
@@ -280,16 +327,24 @@ initialise();
 											// form
 			var myLink=links[index];// retrieve the link to be followed
 			
+			
+			
+			//alert(links.toString());
 			if (voiceFeedback==true)
 			{
 				speechapi.speak(result.text,"male"); 
 			}
 			//document.getElementById('link').innerHTML=myLink;
-			if (highlightLink==true) {changeLinkColour(result.text.toLowerCase());};//Change the link colour on selection if activated
-		//	document.getElementById().color = "red";
-			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
+			if (highlightLink==true) {
+			changeLinkIDs();//Assign each font element the appropriate id
+			changeLinkColour(result.text.toLowerCase(),highlightColour);};//Change the link colour on selection if activated
+	
+			changeToConfirmationMode(myLink,result.text);
+			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
+		else speechapi.speak("Please say again","male");
+		
 	}
 	
 	// checks to see if a command was called
@@ -303,14 +358,17 @@ initialise();
 		case 1:	speechapi.speak("Up","male");
 				setTimeout(scrollup, delayForVoicefeedback);
 				break;
-		case 2:	speechapi.speak("Back","male");
-				setTimeout(goback, delayForVoicefeedback);
+		case 2:	speechapi.speak("Backwards","male");
+				//setTimeout(goback, delayForVoicefeedback);
+				changeToConfirmationMode("empty link",result.text);
 				break;
 		case 3:	speechapi.speak("Forward","male");
-				setTimeout(goforward, delayForVoicefeedback);
+				//setTimeout(goforward, delayForVoicefeedback);
+				changeToConfirmationMode("empty link",result.text);
 				break;
 		case 4:	speechapi.speak("Home","male");
-				setTimeout("gohome()",delayForVoicefeedback);
+				//setTimeout("gohome()",delayForVoicefeedback);
+				changeToConfirmationMode("empty link",result.text);
 				break;
 		default:return false; 
 		}
@@ -319,6 +377,57 @@ initialise();
 		
 	}
 	
+	function tryProcessConfirmation(result)
+		{
+			var answer=result.text.toUpperCase();
+			
+			if (answer=="NO")
+				{speechapi.speak("No","male"); 
+				confirmationMode=false;
+				onLoaded();//Set up the original vocabulary again
+				
+				 changeLinkColour (lastResult,"blue");//Create conditional check (may be a command and not a link number...)
+			
+				}
+			else if (answer=="YES")
+				{	speechapi.speak("Yes","male"); 
+					confirmationMode=false;//Set back to the other mode 
+					var command=checkResultIsCommand(lastResult);
+					if (command==true)
+					{
+						processConfirmationTypeCommand(lastResult);
+					
+					}		
+					else setTimeout(navigate,delayForVoicefeedback,linkAwaitingConfirmation); 
+					//navigate(linkAwaitingConfirmation);//result is not a command but a link. Thus, navigate
+				}
+		
+		
+		}
+		
+	function checkResultIsCommand(theLastResult)
+	{
+		if  ((theLastResult.toUpperCase()=="HOME") || (theLastResult.toUpperCase()=="BACKWARDS") || (theLastResult.toUpperCase()=="FORWARD"))
+			{
+				return true;
+			}
+		else
+		return false;
+	}
+	
+	function processConfirmationTypeCommand(lastResult)
+	{
+		if (lastResult.toUpperCase()=="HOME") 
+		{setTimeout("gohome()",delayForVoicefeedback);}
+		else if (lastResult.toUpperCase()=="BACKWARDS")
+		{setTimeout("goback()", delayForVoicefeedback);}
+		else if
+		(lastResult.toUpperCase()=="FORWARD")
+		{setTimeout("goforward()", delayForVoicefeedback);}
+		else alert("processConfirmationTypeCommand does not consider the issued command to be a confirmation type command.");
+	
+	
+	}
 	
 //stores the URLS corresponding to the different link numbers
 	function AssignLinkNumbers() 
@@ -335,6 +444,16 @@ initialise();
 	
 		return urlnumbers;
 	}
+	
+	function changeToConfirmationMode(myLink,name)
+	{
+	 confirmationMode=true;//This will divert flow of program from the onLoaded point onward
+	 lastResult=name; //set the global variable for use in confirmation mode (need to access the previous result)
+	 linkAwaitingConfirmation=myLink;//Assign to global
+	 //highlight the link
+	 onLoaded();//Force it 
+	}
+	
 	// Note:This searches a clean array with no commands because it is used to
 	// align commands with links
 	function searchForLinkNumberIndex(result)
@@ -348,7 +467,7 @@ initialise();
 				
 			} 
 		}
-	
+		
 		return -1;
 	}
 	
@@ -387,7 +506,7 @@ initialise();
 	
 	function hideFlash()
 	{
-	
+		
 		//flashObjs = document.getElementsByTagName("div");
 		flashObj=document.getElementById("flashContent");
 		flashObj.style.visibility = "hidden";
@@ -399,7 +518,7 @@ initialise();
 	
 		document.getElementById(speechapi.containerID).startRecognition();
 		//var t=setTimeout("myStopRecognition()",1500);
-		setSwitchFocus(2);
+		
  
 		
 	}
@@ -408,25 +527,19 @@ initialise();
 	{
 	
 		document.getElementById(speechapi.containerID).stopRecognition();
-		setSwitchFocus(1);
+		
 	//startRecogntion(); 
 		
 	}
 
  //alternate the focus of the switches when keys are pressed 
-	function setSwitchFocus(switchnum)
-	{
-	 if ((switchnum ==1) || (switchnum ==2))
-		 {
-		 
-		 	document.getElementById("switch"+switchnum).focus();
-		 	if (switchnum==2)
-	     	{
-		 		switchnum=1;
-	    	 }
-		 	else switchnum=2;
-	     
-		 }
+	function setSwitchFocus()
+	{	//If there are links, focus on the first one.
+		if (document.links.length>1)
+		{
+			document.links[0].focus();
+		}
+	
 	} 
 	
 	function navigate(mylink)
@@ -435,10 +548,36 @@ initialise();
 	}
 
 	
-	function changeLinkColour (i)
+	function changeLinkColour (i,colour)
 	{
 		if(document.getElementById)
-			document.getElementById(i).color = "red";
+			document.getElementById(i).color = colour;
 		else if(document.all)
-			document.all[i].color = "red";
+			document.all[i].color = colour;
+	}
+	//Adapted from http://javascript.about.com/library/bldom08.htm
+	//Creates a function that allows us to search for elements by a certain class
+	document.getElementsByClassName = function(cl) 
+	{
+		var retNode = [];
+		var myClass = new RegExp('\\b'+cl+'\\b');
+		var element = this.getElementsByTagName('*');
+		for (var i = 0; i < element.length; i++) {
+			var classes = element[i].className;
+		if (myClass.test(classes)) retNode.push(element[i]);
+	}
+		return retNode;
+	}; 
+	//This function cycles through all the font elements that contrinute to link highlight and assigns them the appropriate reference
+	function changeLinkIDs()
+	{
+	var canHighlight=document.getElementsByClassName('tobered');
+	 var i=0;
+	 
+	 for (i=0;i<canHighlight.length;i++)
+	 {  //element.attributeName = 'value'
+		document.getElementsByClassName('tobered')[i].id=neededNumbersArray[i];
+	 }
+
+	
 	}
