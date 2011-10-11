@@ -174,7 +174,7 @@ initialise();
 		var i=0;
 		for (i=0; i<linkCount; i++) 
 		{
-			theLink = (document.links[i].name);
+			theLink = (document.links[i].id);
 			wordNumbers[i]=theLink;
 		}
 	
@@ -286,7 +286,7 @@ initialise();
 			{
 				if (!tryProcessResultAsCommand(result))
 					{	
-						tryProcessResultAsLink(result);
+						tryProcessResultAsNumberedLink(result);
 					}
 			}
 			
@@ -308,15 +308,21 @@ initialise();
 			}
 			
 			//document.getElementById('link').innerHTML=myLink;
-	
-			setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
+			if (highlightLink==true) {
+			changeLinkIDs();//Assign each font element the appropriate id
+			changeLinkColour(result.text.toLowerCase(),highlightColour);};//Change the link colour on selection if activated
+			
+			changeToConfirmationMode(myLink,result.text);
+			
+			
+			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
 		
 	}
 	
 	// Checks to see if a link number was called
-	function tryProcessResultAsLink(result)
+	function tryProcessResultAsNumberedLink(result)
 	{
 		var index=searchForLinkNumberIndex(result);// find index used to follow
 												// links
@@ -573,11 +579,20 @@ initialise();
 	{
 	var canHighlight=document.getElementsByClassName('tobered');
 	 var i=0;
-	 
-	 for (i=0;i<canHighlight.length;i++)
-	 {  //element.attributeName = 'value'
-		document.getElementsByClassName('tobered')[i].id=neededNumbersArray[i];
-	 }
+	 if (numericalReferenced==true)
+	{//Assign numbers
+		for (i=0;i<canHighlight.length;i++)
+		{  //element.attributeName = 'value'
+			document.getElementsByClassName('tobered')[i].id=neededNumbersArray[i];
+		}
+	}
+	else 
+	{//Assign numbers
+		for (i=0;i<canHighlight.length;i++)
+		{  //element.attributeName = 'value'
+			document.getElementsByClassName('tobered')[i].id=neededNameArray[i].toLowerCase();;
+		}
+	}
 
 	
 	}
