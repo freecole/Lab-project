@@ -1,0 +1,188 @@
+body
+{
+        padding: 0px;
+        font-size: 10pt;
+        color: black;
+        font-family:Arial; 
+}
+        
+.style1
+{
+    color: #FFFF66;
+    font-weight: bold;
+}
+
+<!-- ===================== Menu ================== -->
+		div.menu {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		padding: 10px;
+		height: auto;
+		width: 90%;
+		}
+		
+		div.ad1 {
+		position: absolute;
+		top: 10px;
+		left: 230px;
+		padding: 10px;
+		height: auto;
+		width: 30%;
+		}
+		
+		div.ad2{
+		position: absolute;
+		top: 10px;
+		left: 664px;
+		padding: 10px;
+		height: 80px;
+		width: 20%;
+		}
+		
+		div.ad3{
+		position: absolute;
+		top: 10px;
+		left: 1072px;
+		padding: 10px;
+		height: 80px;
+		width: 10%;
+		}
+<!-- ===================== Top Story =============== -->
+		div.topStory {
+		position: absolute;
+		top: 160px;
+		left: 35px;
+		padding: 10px;
+		height: auto;
+		width: 95%;
+		border:2px solid white;
+		}
+		
+		div.topStory1 {
+		padding: 10px;
+		position: absolute;
+		left: 50px;
+		top: 90px;
+		width: auto;
+		height:auto;
+		}
+		
+		div.topStory2 {
+		padding: 10px;
+		position: absolute;
+		left: 610px;
+		top: 130px;
+		width: 340px;
+		height:auto;
+		}
+		
+		div.topStory3 {
+		padding: 10px;
+		position: absolute;
+		right: 60px;
+		top: 130px;
+		width: 310px;
+		height:auto;
+		}
+<!-- ===================== News Section =============== -->
+		div.content {
+		position: absolute;
+		top: 600px;
+		left: 10px;
+		padding: 10px;
+		height: auto;
+		width: 95%;
+		border:2px solid red;
+		}
+		
+		div.southAfrica{
+		padding: 10px;
+		position: absolute;
+		top: 320px;
+		left: 50px;
+		height:280px;
+		width: 590px;
+		border:2px solid black;
+		}
+		
+		div.sport {
+		padding: 10px;
+		position: absolute;
+		top: 320px;
+		left: 668px;
+		height:280px;
+		width: 590px;
+		border:2px solid black;
+		}
+		
+		div.world {
+		padding: 10px;
+		position: absolute;
+		top: 630px;
+		left: 50px;
+		height:280px;
+		width: 590px;
+		border:2px solid black;
+		}
+		
+		div.entertainment {
+		padding: 10px;
+		position: absolute;
+		top: 630px;
+		left: 668px;
+		height: 280px;
+		width: 590px;
+		border:2px solid black;
+		}
+		
+		div.sectionVoice{
+		padding: 10px;
+		position: absolute;
+		top: 940px;
+		left: 50px;
+		height: 200px;
+		width: 400px;
+		}
+		  	  
+		a:visited 
+		{
+			color: #0000FF;
+		}
+		
+		div.mainSection {
+		position: absolute;
+		top: 140px;
+		left: 60px;
+		padding: 10px;
+		height: auto;
+		width: 1212px;
+		}
+		
+<!-- ======= news Section ============= -->
+		div.newsMainSection {
+		position: absolute;
+		top: 130px;
+		left: 90px;
+		padding: 10px;
+		height: 450px;
+		width: 1212px;
+		}
+		
+		div.newsTopStory {
+		padding: 10px;
+		position: absolute;
+		left: 380px;
+		top: 150px;
+		width: 860px;
+		height: auto;
+		}
+		
+		div.newsStories {
+		padding: 10px;
+		position: absolute;
+		left: 60px;
+		top: 150px;
+		width: 1210px;
+		height: auto;
+		}
