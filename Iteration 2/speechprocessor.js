@@ -80,7 +80,7 @@ initialise();
         speechapi.setup("freecole","0706009y",onResult,onFinishTTS, onLoaded, "flashContent");
         
 		if (debugmode==true) {setup();}//This shows an image indicating that the API has been setup
-        setTimeout("initialisePage()",1000);
+        setTimeout("initialisePage()",1500);
   
     }
 
@@ -102,7 +102,7 @@ initialise();
 				
 				if (debugmode==true) {vocabSetup();}
 				
-    
+			
     		
         //Put something here that shows an image to indicate that the flash player is ready... 
 	}
