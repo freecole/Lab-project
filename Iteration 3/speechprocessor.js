@@ -154,8 +154,9 @@ initialise();
 			}
 		else if (numericalReferenced==false)
 			{
-				allOptionsString=assignLinkWords();
-			
+				allCommandsString="down,up,backwards,forward,home,";
+				var wordsInLinks=assignLinkWords();
+				allOptionsString=allCommandsString+wordsInLinks;
 			}
 		else if (numericalReferenced==true) //otherwise, we assign a numerical vocabulary
 			{
@@ -204,11 +205,21 @@ initialise();
     //For now the function simply returns what it is given as allOptionsDoes not yet contain commands or additional names
     function determineSpecificLinkNamesString(allOptionsString)
     {
+    	firstElementIndex=allOptionsString.indexOf("home")+5;//Home must always be the last! Offeset fives first element
+		if (firstElementIndex !=-1)
+			{
+			// Extract all the required commands
+			var allCommandsString= allOptionsString.slice(0,firstElementIndex-1);
+			allCommandsArray=allCommandsString.split(",");
+			
+			//Extract the words again
+			var allLinkWordsString= allOptionsString.slice(firstElementIndex);
+			neededNameArray=allLinkWordsString.split(",");
+		
     	
-
-    	neededNameArray=allOptionsString.split(',');//Turn into an array and store
-    	return allOptionsString;
-    	
+			return allOptionsString;//Return everything you were given as this is needed for the entire vocab
+			}
+			else return "ERROR!";
     }
 	//For consistency, a sperate function was created for this. What if additinal commands are needed in the furure. 
 	 function determineSpecificConfirmationsString(allOptionsString)
@@ -280,7 +291,10 @@ initialise();
 			
 		else if (numericalReferenced==false)
 			{
-				tryProcessResultAsLinkName(result);	
+				if (!tryProcessResultAsCommand(result))
+				{
+					tryProcessResultAsLinkName(result);
+				}
 			}
 		else if (numericalReferenced==true)
 			{
