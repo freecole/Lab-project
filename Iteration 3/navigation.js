@@ -29,7 +29,7 @@
   
  function gohome()
  {
-	 window.open('http://localhost/Lab-project/Iteration 2/index.html','_self');
+	 window.open('http://localhost/Lab-project/Iteration 3/NumericalRef/index.html','_self');
  }
 
 
