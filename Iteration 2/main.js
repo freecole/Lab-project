@@ -59,3 +59,15 @@ function resultReturned(stringresult)
 		//document.write('<font size="4" color="purple"><b><i>Speech api loaded.</i></b></font>', this);
 
 }
+
+function beginNumericalTest()
+{
+	alert("Begin Numerical Testing");
+
+}
+
+function beginSpokenLinkTest()
+{
+	alert("Begin Spoken Link Name Testing");
+}
+
