@@ -50,19 +50,18 @@ body
 		
 		div.topStory {
 		position: absolute;
-		top: 160px;
+		top: 90px;
 		left: 35px;
 		padding: 10px;
 		height: auto;
 		width: 95%;
-		border:2px solid white;
 		}
 		
 		div.topStory1 {
 		padding: 10px;
 		position: absolute;
-		left: 50px;
-		top: 90px;
+		left: 10px;
+		top: 30px;
 		width: auto;
 		height:auto;
 		}
@@ -70,8 +69,8 @@ body
 		div.topStory2 {
 		padding: 10px;
 		position: absolute;
-		left: 610px;
-		top: 130px;
+		left: 580px;
+		top: 40px;
 		width: 340px;
 		height:auto;
 		}
@@ -79,26 +78,25 @@ body
 		div.topStory3 {
 		padding: 10px;
 		position: absolute;
-		right: 60px;
-		top: 130px;
+		right: 42px;
+		top: 40px;
 		width: 310px;
 		height:auto;
 		}
 
 		div.content {
 		position: absolute;
-		top: 600px;
+		top: 320px;
 		left: 10px;
 		padding: 10px;
 		height: auto;
 		width: 95%;
-		border:2px solid red;
 		}
 		
 		div.southAfrica{
 		padding: 10px;
 		position: absolute;
-		top: 320px;
+		top: 40px;
 		left: 50px;
 		height:280px;
 		width: 590px;
@@ -108,7 +106,7 @@ body
 		div.sport {
 		padding: 10px;
 		position: absolute;
-		top: 320px;
+		top: 40px;
 		left: 668px;
 		height:280px;
 		width: 590px;
@@ -118,7 +116,7 @@ body
 		div.world {
 		padding: 10px;
 		position: absolute;
-		top: 630px;
+		top: 350px;
 		left: 50px;
 		height:280px;
 		width: 590px;
@@ -128,7 +126,7 @@ body
 		div.entertainment {
 		padding: 10px;
 		position: absolute;
-		top: 630px;
+		top: 350px;
 		left: 668px;
 		height: 280px;
 		width: 590px;
@@ -161,7 +159,7 @@ body
 		div.newsMainSection {
 		position: absolute;
 		top: 130px;
-		left: 90px;
+		left: 40px;
 		padding: 10px;
 		height: 450px;
 		width: 1212px;
@@ -170,17 +168,17 @@ body
 		div.newsTopStory {
 		padding: 10px;
 		position: absolute;
-		left: 380px;
-		top: 150px;
-		width: 860px;
+		left: 370px;
+		top: 35px;
+		width: 850px;
 		height: auto;
 		}
 		
 		div.newsStories {
 		padding: 10px;
 		position: absolute;
-		left: 60px;
+		left: 70px;
 		top: 150px;
-		width: 1210px;
+		width: 1185px;
 		height: auto;
 		}
