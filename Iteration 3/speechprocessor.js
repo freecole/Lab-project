@@ -21,6 +21,7 @@ var delayForVoicefeedback=1000;
 
 var linkAwaitingConfirmation="empty";
 var lastResult="none";//Used for the confirmation. Need to know last result so that colour reversion can occure
+var confirmationDecline=false;//Determines whether or not to tell if loaded
 
 initialise();
 
@@ -92,12 +93,12 @@ initialise();
 
     function onLoaded() 
     {	if (debugmode==true) {loaded();}//Shows that the API has been loaded successfully
- /*   
- 	if ((voiceFeedback==true) &&  (confirmationMode==false)) //Make sure that loaded is not said when it is not confirmation mode!
+   
+ 	if ((voiceFeedback==true) &&  (confirmationDecline==false)) //Make sure that a decline has not just happened. No need to tell of loaded
 		{
-    		speechapi.speak("Loaded","male"); 
+    		speechapi.speak("Ready","male"); 
 		}
-	*/	
+	
 		
     	
     	//Now, on load for numerical referencing requires a vocab to be loaded
@@ -284,7 +285,11 @@ initialise();
 // General purpose functions
 	function processResult(result)
 	{	
-		if (confirmationMode==true)
+		if (result.text.toUpperCase()=="RECOGNITION ERROR")
+			{
+				speechapi.speak("Please say again","male");
+			}
+		else if (confirmationMode==true)
 			{
 				tryProcessConfirmation(result);
 			}
@@ -363,7 +368,7 @@ initialise();
 			//setTimeout(navigate, delayForVoicefeedback, myLink);//Note:This only works in firefox
 	
 		}
-		else speechapi.speak("Please say again","male");
+	
 		
 	}
 	
@@ -404,7 +409,9 @@ initialise();
 			if (answer=="NO")
 				{speechapi.speak("No","male"); 
 				confirmationMode=false;
+				confirmationDecline=true;//Makes sure "loaded is not said when no navigation occures"
 				onLoaded();//Set up the original vocabulary again
+				
 				
 				 changeLinkColour (lastResult,"blue");//Create conditional check (may be a command and not a link number...)
 			
@@ -471,6 +478,7 @@ initialise();
 	 lastResult=name; //set the global variable for use in confirmation mode (need to access the previous result)
 	 linkAwaitingConfirmation=myLink;//Assign to global
 	 //highlight the link
+	 confirmationDecline=true;
 	 onLoaded();//Force it 
 	}
 	
