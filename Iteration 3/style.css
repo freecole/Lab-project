@@ -12,7 +12,6 @@ body
     font-weight: bold;
 }
 
-<!-- ===================== Menu ================== -->
 		div.menu {
 		position: absolute;
 		top: 10px;
@@ -48,7 +47,7 @@ body
 		height: 80px;
 		width: 10%;
 		}
-<!-- ===================== Top Story =============== -->
+		
 		div.topStory {
 		position: absolute;
 		top: 160px;
@@ -85,7 +84,7 @@ body
 		width: 310px;
 		height:auto;
 		}
-<!-- ===================== News Section =============== -->
+
 		div.content {
 		position: absolute;
 		top: 600px;
@@ -159,7 +158,6 @@ body
 		width: 1212px;
 		}
 		
-<!-- ======= news Section ============= -->
 		div.newsMainSection {
 		position: absolute;
 		top: 130px;
