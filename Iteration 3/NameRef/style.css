@@ -15,7 +15,7 @@ body
 		div.menu {
 		position: absolute;
 		top: 10px;
-		left: 10px;
+		left: 35px;
 		padding: 10px;
 		height: auto;
 		width: 90%;
@@ -24,7 +24,7 @@ body
 		div.ad1 {
 		position: absolute;
 		top: 10px;
-		left: 265px;
+		left: 235px;
 		padding: 10px;
 		height: auto;
 		width: 30%;
@@ -33,7 +33,7 @@ body
 		div.ad2{
 		position: absolute;
 		top: 10px;
-		left: 664px;
+		left: 635px;
 		padding: 10px;
 		height: 80px;
 		width: 20%;
@@ -42,7 +42,7 @@ body
 		div.ad3{
 		position: absolute;
 		top: 10px;
-		left: 1072px;
+		left: 1040px;
 		padding: 10px;
 		height: 80px;
 		width: 10%;
@@ -86,8 +86,8 @@ body
 
 		div.content {
 		position: absolute;
-		top: 320px;
-		left: 10px;
+		top: 220px;
+		left: 5px;
 		padding: 10px;
 		height: auto;
 		width: 95%;
@@ -97,8 +97,8 @@ body
 		padding: 10px;
 		position: absolute;
 		top: 40px;
-		left: 50px;
-		height:280px;
+		left: 13px;
+		height:325px;
 		width: 590px;
 		border:2px solid black;
 		}
@@ -107,8 +107,8 @@ body
 		padding: 10px;
 		position: absolute;
 		top: 40px;
-		left: 668px;
-		height:280px;
+		left: 631px;
+		height:325px;
 		width: 590px;
 		border:2px solid black;
 		}
@@ -116,9 +116,9 @@ body
 		div.world {
 		padding: 10px;
 		position: absolute;
-		top: 350px;
-		left: 50px;
-		height:280px;
+		top: 392px;
+		left: 13px;
+		height:320px;
 		width: 590px;
 		border:2px solid black;
 		}
@@ -126,9 +126,9 @@ body
 		div.entertainment {
 		padding: 10px;
 		position: absolute;
-		top: 350px;
-		left: 668px;
-		height: 280px;
+		top: 392px;
+		left: 631px;
+		height: 320px;
 		width: 590px;
 		border:2px solid black;
 		}
