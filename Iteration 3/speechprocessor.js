@@ -140,7 +140,7 @@ initialise();
     function initialisePage()
     {
     	setSwitchFocus();//focuses on an page element so keypress works
-         hideFlash();
+        hideFlash();
     	
     }
 
