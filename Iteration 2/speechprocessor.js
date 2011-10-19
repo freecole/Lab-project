@@ -131,7 +131,7 @@ initialise();
     function initialisePage()
     {
     	 setSwitchFocus(1);
-        // hideFlash();
+         hideFlash();
     	
     }
 
