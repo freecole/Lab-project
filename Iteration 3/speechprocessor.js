@@ -572,6 +572,7 @@ initialise();
 	
 	function navigate(mylink)
 	{
+		changeLinkColour (lastResult,"blue");
 		document.location.href =mylink;// follow it
 	}
 
