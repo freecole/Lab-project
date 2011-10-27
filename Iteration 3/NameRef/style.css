@@ -24,7 +24,7 @@ body
 		div.ad1 {
 		position: absolute;
 		top: 10px;
-		left: 235px;
+		left: 200px;
 		padding: 10px;
 		height: auto;
 		width: 30%;
@@ -78,7 +78,7 @@ body
 		div.topStory3 {
 		padding: 10px;
 		position: absolute;
-		right: 42px;
+		left: 930px;
 		top: 69px;
 		width: 310px;
 		height:auto;
