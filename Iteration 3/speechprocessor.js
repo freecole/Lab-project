@@ -1,4 +1,9 @@
-//Note:First truncate this string
+/*
+Note: The API used in this application is GNU GPL. The API was accessed from www.speechAPI.com
+The method "getElementsByClassName" was adapted from: http://javascript.about.com/library/bldom08.htm
+Other Content was authered by Cole Noble
+*/
+
 
 var allCommandsArray=[];
 var neededNumbersArray=[];

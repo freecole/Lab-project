@@ -1,4 +1,4 @@
-// array to store questions
+/*Author: Kirti Nathoo */
 var myArray = new Array();
 // questions for numerical and spoken link referencing
 myArray[1] = "What is the average wing-span of bald eagles?";

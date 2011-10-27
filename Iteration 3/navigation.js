@@ -1,4 +1,4 @@
-
+/*Author: Cole Noble */
     
     function scrolldown(){
     var x=400;

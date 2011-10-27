@@ -1,4 +1,7 @@
-//Note:First truncate this string
+/*
+Note: The API used in this application is GNU GPL. The API was accessed from www.speechAPI.com
+Other Content was authered by Cole Noble
+*/
 
 var allCommandsArray=[];
 var neededNumbersArray=[];

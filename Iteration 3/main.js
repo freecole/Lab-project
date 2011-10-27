@@ -1,3 +1,4 @@
+/*Author: Kirti Nathoo */
 function date_time()
 {
 	document.write("Last updated: ");	
