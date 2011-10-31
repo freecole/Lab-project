@@ -1,0 +1,4 @@
+- maybe add headphones image in background
+- screenshots of app
+- get rid of some text
+- application diagram
